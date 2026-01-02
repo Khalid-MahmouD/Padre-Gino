@@ -1,17 +1,19 @@
 // named import it might break it react-dom
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Pizza from "./Pizza";
+import Order from "./Order";
+import PizzaOfTheDay from "./PizzaOfTheDay";
 
 const App = () => {
   return (
-    <div>
-      <h1>Padre Gino's - Order Now</h1>
-      <Pizza name="Pepperoni" description="pep, cheese, n stuff" />
-      <Pizza name="Pepperoni" description="pep, cheese, n stuff" />
-      <Pizza name="Pepperoni" description="pep, cheese, n stuff" />
-      <Pizza name="Pepperoni" description="pep, cheese, n stuff" />
-    </div>
-  )
+    <StrictMode>
+      <div>
+        <h1 className="logo">Padre Gino's - Order Now</h1>
+        <Order />
+        <PizzaOfTheDay />
+      </div>
+    </StrictMode>
+  );
 };
 
 const container = document.getElementById("root");
