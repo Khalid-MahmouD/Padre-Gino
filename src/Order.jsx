@@ -1,7 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Cart from "./Cart";
 import Pizza from "./Pizza";
-
+import { CartContext } from "./contexts";
+/*
+{
+"id": "bbq_ckn",
+"name": "The Barbecue Chicken Pizza",
+"category": "Chicken",
+"description": "Barbecued Chicken, Red Peppers, Green Peppers, Tomatoes, Red Onions, Barbecue Sauce",
+"image": "/public/pizzas/bbq_ckn.webp",
+"sizes": {
+"S": 12.75,
+"M": 16.75,
+"L": 20.75
+}
+},
+ */
 // feel free to change en-US / USD to your locale
 const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -13,7 +27,7 @@ export default function Order() {
   const [pizzaSize, setPizzaSize] = useState("M");
   const [pizzaTypes, setPizzaTypes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useContext(CartContext);
 
   async function checkout() {
     setLoading(true);
