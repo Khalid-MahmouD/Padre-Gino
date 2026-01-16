@@ -5,3 +5,4 @@ dis/
 coverage/
 .vscode/
 routeTree.gen.ts
+coverage/
