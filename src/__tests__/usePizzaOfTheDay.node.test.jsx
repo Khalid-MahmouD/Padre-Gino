@@ -16,18 +16,6 @@ const testPizza = {
   sizes: { S: 12.25, M: 16.25, L: 20.25 },
 };
 
-// how to render a hook outside a component ?
-// function getPizzaOfTheDay() {
-//   let pizza;
-//   function TestComponent() {
-//     pizza = usePizzaOfTheDay();
-//     return null;
-//   }
-
-//   renderHook(<TestComponent />);
-//   return pizza;
-// }
-
 test("give null when first call", async () => {
   fetch.mockResponseOnce(JSON.stringify(testPizza));
   const { result } = renderHook(() => usePizzaOfTheDay());

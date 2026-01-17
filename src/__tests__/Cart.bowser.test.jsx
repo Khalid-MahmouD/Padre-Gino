@@ -6,5 +6,5 @@ import Cart from "../Cart";
 
 test("snapshot with nothing in cart", () => {
   const { asFragment } = render(<Cart cart={[]} />);
-  expect(asFragment).toMatchSnapshot();
+  expect(asFragment()).toMatchSnapshot();
 });
