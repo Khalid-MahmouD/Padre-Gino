@@ -1,32 +1,41 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { Suspense, use, useState } from "react";
 import { getPastOrder, getPastOrders } from "../api";
-import { formatCurrency } from "../useCurrency";
 import ErrorBoundary from "../ErrorBoundary";
 import Modal from "../Modal";
+import { formatCurrency } from "../useCurrency";
 export const Route = createLazyFileRoute("/past")({
   component: ErrorBoundaryWrappedPastOrderRoutes,
 });
+// the key is promise handling with suspense
 
-function ErrorBoundaryWrappedPastOrderRoutes(props) {
+function ErrorBoundaryWrappedPastOrderRoutes() {
+  const pageVar = useState(1);
+  const loadedPromise = useQuery({
+    queryKey: ["past-orders", pageVar[0]],
+    queryFn: () => getPastOrders(pageVar[0]),
+    staleTime: 30000,
+  }).promise;
+
   return (
     <ErrorBoundary>
-      <PastOrdersRoute {...props} />
+      <Suspense
+        fallback={
+          <div className="past-orders">
+            <h2>Loading Past Orders …</h2>
+          </div>
+        }
+      >
+        <PastOrdersRoute loadedPromise={loadedPromise} pageVar={pageVar} />
+      </Suspense>
     </ErrorBoundary>
   );
 }
-function PastOrdersRoute() {
-  // throw new Error("OH NO!");
-  const [page, setPage] = useState(1);
-
+function PastOrdersRoute({ loadedPromise, pageVar }) {
+  const data = use(loadedPromise);
+  const [page, setPage] = pageVar;
   const [focusedOrder, setFocusedOrder] = useState();
-
-  const { isLoading, data } = useQuery({
-    queryKey: ["past-orders", page],
-    queryFn: () => getPastOrders(page),
-    staleTime: 30000,
-  });
 
   const { isLoading: isLoadingPastOrder, data: pastOrderData } = useQuery({
     queryKey: ["past-order", focusedOrder],
@@ -35,14 +44,6 @@ function PastOrdersRoute() {
     // enabled: !!focusedOrder, // dependency
     enabled: Boolean(focusedOrder), // dependency
   });
-
-  if (isLoading) {
-    return (
-      <div className="past-orders">
-        <h2>LOADING …</h2>
-      </div>
-    );
-  }
 
   return (
     <div className="past-orders">
