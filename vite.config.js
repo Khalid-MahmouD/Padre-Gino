@@ -12,8 +12,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [
-    TanStackRouterVite(),
-    react(),
-  ],
+  plugins: [TanStackRouterVite(), react()],
 });
