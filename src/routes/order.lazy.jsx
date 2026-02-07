@@ -14,7 +14,7 @@ export const Route = createLazyFileRoute("/order")({
 "name": "The Barbecue Chicken Pizza",
 "category": "Chicken",
 "description": "Barbecued Chicken, Red Peppers, Green Peppers, Tomatoes, Red Onions, Barbecue Sauce",
-"image": "/public/pizzas/bbq_ckn.webp",
+"image": "/pizzas/bbq_ckn.webp",
 "sizes": {
 "S": 12.75,
 "M": 16.75,
@@ -27,6 +27,7 @@ const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Order() {
   const [pizzaType, setPizzaType] = useState("pepperoni");
@@ -38,7 +39,7 @@ function Order() {
   async function checkout() {
     setLoading(true);
 
-    await fetch("/api/order", {
+    await fetch(`${apiUrl}/api/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +66,7 @@ function Order() {
   }, []);
 
   async function fetchPizzaTypes() {
-    const pizzasRes = await fetch("/api/pizzas");
+    const pizzasRes = await fetch(`${apiUrl}/api/pizzas`);
     const pizzasJson = await pizzasRes.json();
     setPizzaTypes(pizzasJson);
     setLoading(false);
