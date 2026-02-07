@@ -1,5 +1,6 @@
 export default async function postContact(name, email, message) {
-  const response = await fetch("/api/contact", {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${apiUrl}/api/contact`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -8,8 +9,8 @@ export default async function postContact(name, email, message) {
   });
 
   if (!response.ok) {
-    throw new Error("Network response was not ok. send help");
+    throw new Error("Network response was not ok");
   }
-  // you don't need to await cause it chain the current.
+
   return response.json();
 }
